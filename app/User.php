@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Optional player relationship
+     * 
+     * @return BelongsTo
+     */
+    public function player()
+    {
+        return $this->belongsTo(Player::class);
+    }
 }
