@@ -20,6 +20,13 @@ class PlayerFactory
      */
     protected int $songsCount = 0;
 
+    /**
+     * An optional password
+     *
+     * @var string
+     */
+    protected string $password;
+
 
     /**
      * The number of users attached to this player
@@ -27,7 +34,7 @@ class PlayerFactory
      * @param int $count
      * @return PlayerFactory $this
      */
-    public function withUsers($count) : PlayerFactory
+    public function withUsers(int $count) : PlayerFactory
     {
         $this->usersCount = $count;
         return $this;
@@ -36,12 +43,24 @@ class PlayerFactory
     /**
      * The number of songs to be attached to the player
      *
-     * @param $count
+     * @param int $count
      * @return PlayerFactory $this
      */
-    public function withSongs($count) : PlayerFactory
+    public function withSongs(int $count) : PlayerFactory
     {
         $this->songsCount = $count;
+        return $this;
+    }
+
+    /**
+     * The password to protect the player
+     *
+     * @param String $password
+     * @return PlayerFactory
+     */
+    public function withPassword(String $password) : PlayerFactory
+    {
+        $this->password = $password;
         return $this;
     }
 
@@ -53,7 +72,7 @@ class PlayerFactory
      */
     public function create()
     {
-        $player = factory(Player::class)->create();
+        $player = factory(Player::class)->create([ 'password' => $this->password ?? null ]);
 
         factory(User::class, $this->usersCount)->create(['player_id' => $player->id]);
         factory(Song::class, $this->songsCount)->create(['player_id' => $player->id]);

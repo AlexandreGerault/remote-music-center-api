@@ -33,12 +33,9 @@ class PlayerTest extends TestCase
     /** @test */
     public function it_can_have_a_password()
     {
-        $attributes = [
-            'password' => 'a simple pass'
-        ];
-        $passPlayer = factory(Player::class)->create($attributes);
+        $player = PlayerFactory::withPassword('1234')->create();
         
-        $this->assertDatabaseHas('players', $attributes);
+        $this->assertEquals('1234', $player->password);
     }
 
     /** @test */
