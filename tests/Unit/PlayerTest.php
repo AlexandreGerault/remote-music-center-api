@@ -48,4 +48,12 @@ class PlayerTest extends TestCase
         
         $this->assertEquals(5, $player->users->count());
     }
+
+    /** @test */
+    public function it_can_have_songs()
+    {
+        $player = PlayerFactory::withSongs(2)->create();
+
+        $this->assertEquals(2, $player->songs->count());
+    }
 }

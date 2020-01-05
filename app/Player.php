@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Player extends Model
 {
@@ -15,5 +15,16 @@ class Player extends Model
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+
+    /**
+     * Return the queued songs
+     *
+     * @return HasMany
+     */
+    public function songs() : HasMany
+    {
+        return $this->hasMany(Song::class);
     }
 }
