@@ -15,11 +15,8 @@ class UserTest extends TestCase
     /** @test */
     public function it_can_belongs_to_a_player()
     {
-        $user = factory(User::class)->create();
         $player = factory(Player::class)->create();
-
-        $user->player()->associate($player);
-        $user->save();
+        $user = factory(User::class)->create(['player_id' => $player->id]);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -27,6 +24,7 @@ class UserTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function it_has_songs()
     {
         $user = factory(User::class)->create();
