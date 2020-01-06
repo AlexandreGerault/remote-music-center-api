@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Song;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\User;
@@ -24,5 +25,15 @@ class UserTest extends TestCase
             'id' => $user->id,
             'player_id' => $player->id
         ]);
+    }
+
+    public function it_has_songs()
+    {
+        $user = factory(User::class)->create();
+        $song = factory(Song::class)->create([
+            'added_by_id' => $user->id
+        ]);
+
+        $this->assertEquals($user->id, $song->addedBy->id);
     }
 }

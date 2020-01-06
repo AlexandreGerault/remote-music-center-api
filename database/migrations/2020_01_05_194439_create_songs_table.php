@@ -15,11 +15,19 @@ class CreateSongsTable extends Migration
     {
         Schema::create('songs', function (Blueprint $table) {
             $table->bigIncrements('id');
+
             $table->unsignedBigInteger('player_id');
             $table->foreign('player_id')
                 ->references('id')
                 ->on('players')
                 ->onDelete('set null');
+
+            $table->unsignedBigInteger('added_by_id');
+            $table->foreign('added_by_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
+
             $table->timestamps();
         });
     }
@@ -33,6 +41,7 @@ class CreateSongsTable extends Migration
     {
         Schema::table('songs', function (Blueprint $table) {
             $table->dropForeign(['player_id']);
+            $table->dropForeign(['added_by_id']);
         });
         Schema::dropIfExists('songs');
     }
