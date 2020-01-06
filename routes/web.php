@@ -16,3 +16,6 @@ Route::get('/', function () {
 });
 
 Route::post('song/store', 'SongController@store');
+Route::get('join/{code}', 'PlayerController@join');
+Route::get('leave', 'PlayerController@leave');
+Route::get('next/{code}', 'PlayerController@next');

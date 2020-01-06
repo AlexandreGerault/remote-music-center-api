@@ -47,4 +47,24 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Player::class);
     }
+
+    /**
+     * User joins the player
+     *
+     * @param string $code
+     */
+    public function joinPlayer(string $code)
+    {
+        $this->player()->associate(Player::where('code', $code)->first());
+        $this->save();
+    }
+
+    /**
+     * Clear the player relationship
+     */
+    public function leavePlayer()
+    {
+        $this->player()->dissociate();
+        $this->save();
+    }
 }
