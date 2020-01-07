@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Player;
 use App\Song;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Facades\Tests\Setup\SongFactory;
 use Tests\TestCase;
 
 class SongTest extends TestCase
@@ -23,9 +24,7 @@ class SongTest extends TestCase
     public function it_belongs_to_a_player()
     {
         $player = factory(Player::class)->create();
-        $song = factory(Song::class)->create([
-            'player_id' => $player->id
-        ]);
+        $song = SongFactory::toPlayer($player)->create();
 
         $this->assertEquals($player->id, $song->player->id);
     }

@@ -46,30 +46,38 @@ class SongFactory
         return $this;
     }
 
-
     /**
-     * Generate a parameterized song
+     * Create a song with a fluent class
      *
      * @return Song
      */
     public function create()
     {
-        return factory(Song::class)->create([
-            'player_id' => $this->player->id,
-            'added_by_id' => $this->user->id
-        ]);
+        return $this->apply('create');
     }
 
     /**
-     * Generate a parameterized song as array
+     * Create a song attributes array
      *
      * @return array
      */
     public function raw()
     {
-        return factory(Song::class)->raw([
-            'player_id' => $this->player->id,
-            'added_by_id' => $this->user->id
+        return $this->apply('raw');
+    }
+
+
+    /**
+     * Local function to avoid code duplication
+     *
+     * @param string $method Possible methods are the factory methods ('create', 'make', 'raw')
+     * @return mixed
+     */
+    private function apply(string $method = 'create')
+    {
+        return factory(Song::class)->$method([
+            'player_id' => $this->player->id ?? factory(Player::class),
+            'added_by_id' => $this->user->id ?? factory(User::class)
         ]);
     }
 }

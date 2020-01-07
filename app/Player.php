@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Player extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'password',
+    ];
+
+    /**
      * Return the attached users
      * 
      * @return HasMany

@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('song/store', 'SongController@store');
+Route::get('join/{code}', 'PlayerController@join');
+Route::get('leave', 'PlayerController@leave');
+Route::get('next/{code}', 'PlayerController@next');
+Route::post('player/store', 'PlayerController@store');

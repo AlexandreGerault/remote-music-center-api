@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Player;
 use App\Song;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,7 +19,7 @@ class PlayerTest extends TestCase
     {
         $songAttributes = factory(Song::class)->raw();
 
-        $this->post('song/store', $songAttributes)->assertStatus(403);
+        $this->post('api/song/store', $songAttributes)->assertStatus(403);
     }
 
     /** @test */
@@ -29,7 +30,7 @@ class PlayerTest extends TestCase
         $this->actingAs($user);
 
         $songAttributes = factory(Song::class)->raw();
-        $this->post('song/store', $songAttributes)->assertStatus(403);
+        $this->post('api/song/store', $songAttributes)->assertStatus(403);
     }
 
     /** @test */
@@ -42,7 +43,7 @@ class PlayerTest extends TestCase
 
         $songAttributes = SongFactory::addedBy($user)->toPlayer($player)->raw();
 
-        $this->post('song/store', $songAttributes)->assertStatus(200);
+        $this->post('api/song/store', $songAttributes)->assertStatus(201);
 
         $this->assertDatabaseHas('songs', $songAttributes);
         $this->assertEquals(1, $player->songs->count());
@@ -59,7 +60,7 @@ class PlayerTest extends TestCase
         $this->actingAs($user);
         $this->assertEquals(null, $user->player);
 
-        $this->get('join/' . $player->code)->assertStatus(200);
+        $this->get('api/join/' . $player->code)->assertStatus(200);
 
         $this->assertEquals($player->id, $user->player->id);
     }
@@ -74,7 +75,7 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->get('leave')->assertStatus(200);
+        $this->get('api/leave')->assertStatus(200);
 
         $this->assertNull($user->player);
     }
@@ -88,8 +89,19 @@ class PlayerTest extends TestCase
     {
         $player = PlayerFactory::withSongs(2)->create();
 
-        $response = $this->get('next/' . $player->code)
+        $response = $this->get('api/next/' . $player->code)
             ->assertStatus(200)
             ->json();
+    }
+
+    /** @test */
+    public function a_user_can_create_a_player()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->raw();
+
+        $this->actingAs($user);
+
+        $response = $this->post('api/player/store', $player)->assertStatus(201);
     }
 }
