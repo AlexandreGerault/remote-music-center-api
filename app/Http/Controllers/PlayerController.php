@@ -35,7 +35,7 @@ class PlayerController extends Controller
      */
     public function next(string $code)
     {
-        $song = Player::byCode($code)->first()->songs->first();
+        $song = Player::byCode($code)->first()->songs->sortByDesc('created_at')->last();
 
         return response($song->toJson(), 200);
     }
