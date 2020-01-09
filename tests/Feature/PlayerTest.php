@@ -59,7 +59,7 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->post('api/players.join', ['player' => $player->id])->assertStatus(200);
+        $this->post('api/players/join', ['player' => $player->id])->assertStatus(200);
 
         $this->assertEquals($player->id, $user->player->id);
     }
@@ -72,7 +72,7 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->post('api/players.join', ['player' => $player->id])->assertStatus(403);
+        $this->post('api/players/join', ['player' => $player->id])->assertStatus(403);
     }
 
     /** @test */
@@ -83,7 +83,7 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->post('api/players.join', [
+        $this->post('api/players/join', [
             'player' => $player->id,
             'password' => 'protected'
         ])->assertStatus(200);
@@ -99,7 +99,7 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->post('api/players.leave')->assertStatus(200);
+        $this->post('api/players/leave')->assertStatus(200);
 
         $this->assertNull($user->player);
     }
