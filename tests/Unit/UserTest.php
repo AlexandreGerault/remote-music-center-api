@@ -13,6 +13,14 @@ class UserTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function it_does_not_belong_to_a_player_by_default()
+    {
+        $user = factory(User::class)->create();
+
+        $this->assertEquals(null, $user->player);
+    }
+
+    /** @test */
     public function it_can_belongs_to_a_player()
     {
         $player = factory(Player::class)->create();

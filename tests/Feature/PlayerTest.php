@@ -50,7 +50,7 @@ class PlayerTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_join_a_player()
+    public function a_user_can_join_an_unprotected_player()
     {
         $this->withoutExceptionHandling();
 
@@ -58,11 +58,35 @@ class PlayerTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user);
-        $this->assertEquals(null, $user->player);
 
         $this->post('api/players.join', ['player' => $player->id])->assertStatus(200);
 
         $this->assertEquals($player->id, $user->player->id);
+    }
+
+    /** @test */
+    public function a_user_cannot_join_a_protected_player_without_its_password()
+    {
+        $player = PlayerFactory::withPassword("protected")->create();
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $this->post('api/players.join', ['player' => $player->id])->assertStatus(403);
+    }
+
+    /** @test */
+    public function a_user_can_join_a_protected_player_with_its_password()
+    {
+        $player = PlayerFactory::withPassword("protected")->create();
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $this->post('api/players.join', [
+            'player' => $player->id,
+            'password' => 'protected'
+        ])->assertStatus(200);
     }
 
     /** @test */

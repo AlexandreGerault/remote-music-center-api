@@ -20,9 +20,15 @@ class PlayerController extends Controller
     {
         $player = Player::findOrFail($request->get('player'));
 
-        auth()->user()->joinPlayer($player);
+        if(
+            $player->password && $request->get('password') === $player->password
+            || $player->password === null
+        ) {
+            auth()->user()->joinPlayer($player);
+            return response()->json($player->toJson(), 200);
+        }
 
-        return response()->json($player->toJson(), 200);
+        return response()->json(null, 403);
     }
 
     /**
