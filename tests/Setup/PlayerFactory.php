@@ -3,6 +3,7 @@ namespace Tests\Setup;
 use App\Player;
 use App\Song;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class PlayerFactory
 {
@@ -25,7 +26,7 @@ class PlayerFactory
      *
      * @var string
      */
-    protected string $password;
+    protected string $password = "";
 
 
     /**
@@ -55,10 +56,10 @@ class PlayerFactory
     /**
      * The password to protect the player
      *
-     * @param String $password
+     * @param string $password
      * @return PlayerFactory
      */
-    public function withPassword(String $password) : PlayerFactory
+    public function withPassword(string $password) : PlayerFactory
     {
         $this->password = $password;
         return $this;
@@ -72,7 +73,7 @@ class PlayerFactory
      */
     public function create()
     {
-        $player = factory(Player::class)->create([ 'password' => $this->password ?? null ]);
+        $player = factory(Player::class)->create([ 'password' => strlen($this->password) ? Hash::make($this->password) : null ]);
 
         factory(User::class, $this->usersCount)->create(['player_id' => $player->id]);
         factory(Song::class, $this->songsCount)->create(['player_id' => $player->id]);

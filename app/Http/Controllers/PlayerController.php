@@ -7,6 +7,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class PlayerController extends Controller
 {
@@ -21,7 +22,7 @@ class PlayerController extends Controller
         $player = Player::findOrFail($request->get('player'));
 
         if(
-            $player->password && $request->get('password') === $player->password
+            $player->password && Hash::check($request->get('password'), $player->password)
             || $player->password === null
         ) {
             auth()->user()->joinPlayer($player);
@@ -63,7 +64,7 @@ class PlayerController extends Controller
     public function store(Request $request)
     {
         $player = Player::create([
-            'password' => $request->get('password') ?? null
+            'password' => Hash::make($request->get('password')) ?? null
         ]);
 
         if ($player) return response($player->toJson(), 201);
