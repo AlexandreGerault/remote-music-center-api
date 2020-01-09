@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('songs/store', 'SongController@store');
+Route::post('players/join', 'PlayerController@join');
+Route::post('players/leave', 'PlayerController@leave');
+Route::get('next/{player}', 'PlayerController@next');
+Route::post('players/store', 'PlayerController@store');
