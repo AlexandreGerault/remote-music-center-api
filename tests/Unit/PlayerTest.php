@@ -16,11 +16,11 @@ class PlayerTest extends TestCase
     {
         $player = factory(Player::class)->create();
 
-        $this->assertTrue($player->code !== null);
+        $this->assertTrue($player->id !== null);
     }
 
     /** @test */
-    public function its_code_must_be_unique()
+    /*public function its_code_must_be_unique()
     {
         $uuid = uniqid();
 
@@ -28,7 +28,7 @@ class PlayerTest extends TestCase
 
         $player1 = factory(Player::class)->create(['code' => $uuid]);
         $player2 = factory(Player::class)->create(['code' => $uuid]);
-    }
+    }*/
     
     /** @test */
     public function it_can_have_a_password()

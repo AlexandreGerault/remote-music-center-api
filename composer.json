@@ -1,5 +1,5 @@
 {
-    "name": "laravel/remote-music-center",
+    "name": "remote-music-center/api",
     "type": "project",
     "description": "The remote music center service.",
     "keywords": [

@@ -14,19 +14,21 @@ class SongController extends Controller
     /**
      * Store a song
      *
-     * @return ResponseFactory|Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store()
     {
         if (auth()->guest() || auth()->check() && ! auth()->user()->player instanceof Player) {
-            abort(403);
+            return response()->json([
+                'message' => "You have to be logged"
+            ], 403);
         }
 
-        Song::create([
+        $song = Song::create([
             'player_id' => auth()->user()->player->id,
             'added_by_id' => auth()->user()->id
         ]);
 
-        return response(null, 201);
+        return response()->json($song->toJson(), 201);
     }
 }

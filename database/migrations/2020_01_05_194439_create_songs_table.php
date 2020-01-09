@@ -20,9 +20,9 @@ class CreateSongsTable extends Migration
             $table->foreign('player_id')
                 ->references('id')
                 ->on('players')
-                ->onDelete('set null');
+                ->onDelete('cascade');
 
-            $table->unsignedBigInteger('added_by_id');
+            $table->unsignedBigInteger('added_by_id')->nullable();
             $table->foreign('added_by_id')
                 ->references('id')
                 ->on('users')

@@ -51,11 +51,11 @@ class User extends Authenticatable
     /**
      * User joins the player
      *
-     * @param string $code
+     * @param Player $player
      */
-    public function joinPlayer(string $code)
+    public function joinPlayer(Player $player)
     {
-        $this->player()->associate(Player::where('code', $code)->first());
+        $this->player()->associate($player);
         $this->save();
     }
 

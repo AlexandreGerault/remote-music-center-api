@@ -17,9 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::post('song/store', 'SongController@store');
-Route::get('join/{code}', 'PlayerController@join');
-Route::get('leave', 'PlayerController@leave');
-Route::get('next/{code}', 'PlayerController@next');
-Route::post('player/store', 'PlayerController@store');
+Route::post('songs/store', 'SongController@store');
+Route::post('players.join', 'PlayerController@join');
+Route::post('players.leave', 'PlayerController@leave');
+Route::get('next/{player}', 'PlayerController@next');
+Route::post('players/store', 'PlayerController@store');

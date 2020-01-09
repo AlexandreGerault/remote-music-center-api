@@ -19,7 +19,7 @@ class PlayerTest extends TestCase
     {
         $songAttributes = factory(Song::class)->raw();
 
-        $this->post('api/song/store', $songAttributes)->assertStatus(403);
+        $this->post('api/songs/store', $songAttributes)->assertStatus(403);
     }
 
     /** @test */
@@ -30,7 +30,7 @@ class PlayerTest extends TestCase
         $this->actingAs($user);
 
         $songAttributes = factory(Song::class)->raw();
-        $this->post('api/song/store', $songAttributes)->assertStatus(403);
+        $this->post('api/songs/store', $songAttributes)->assertStatus(403);
     }
 
     /** @test */
@@ -43,7 +43,7 @@ class PlayerTest extends TestCase
 
         $songAttributes = SongFactory::addedBy($user)->toPlayer($player)->raw();
 
-        $this->post('api/song/store', $songAttributes)->assertStatus(201);
+        $this->post('api/songs/store', $songAttributes)->assertStatus(201);
 
         $this->assertDatabaseHas('songs', $songAttributes);
         $this->assertEquals(1, $player->songs->count());
@@ -60,7 +60,7 @@ class PlayerTest extends TestCase
         $this->actingAs($user);
         $this->assertEquals(null, $user->player);
 
-        $this->get('api/join/' . $player->code)->assertStatus(200);
+        $this->post('api/players.join', ['player' => $player->id])->assertStatus(200);
 
         $this->assertEquals($player->id, $user->player->id);
     }
@@ -75,7 +75,7 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->get('api/leave')->assertStatus(200);
+        $this->post('api/players.leave')->assertStatus(200);
 
         $this->assertNull($user->player);
     }
@@ -89,7 +89,7 @@ class PlayerTest extends TestCase
     {
         $player = PlayerFactory::withSongs(2)->create();
 
-        $response = $this->get('api/next/' . $player->code)
+        $response = $this->get('api/next/' . $player->id)
             ->assertStatus(200)
             ->json();
     }
@@ -102,6 +102,6 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->post('api/player/store', $player)->assertStatus(201);
+        $response = $this->post('api/players/store', $player)->assertStatus(201);
     }
 }

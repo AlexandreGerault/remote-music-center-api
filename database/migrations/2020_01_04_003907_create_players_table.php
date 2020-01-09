@@ -15,7 +15,6 @@ class CreatePlayersTable extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code')->default(uniqid())->unique();
             $table->string('password')->nullable();
             $table->timestamps();
         });
