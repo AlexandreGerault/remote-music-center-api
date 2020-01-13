@@ -35,7 +35,6 @@ class ApiAuthenticationTest extends TestCase
         ]);
 
         $this->post('api/auth/register', $user)
-        ->assertStatus(201)
-        ->assertJsonPath('token_type', 'bearer');
+        ->assertStatus(201);
     }
 }
