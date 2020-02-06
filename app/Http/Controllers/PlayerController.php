@@ -64,7 +64,7 @@ class PlayerController extends Controller
     public function store(Request $request)
     {
         $player = Player::create([
-            'password' => Hash::make($request->get('password')) ?? null
+            'password' => ($password = $request->get('password')) === null ? null : Hash::make($password),
         ]);
 
         if ($player) return response($player->toJson(), 201);

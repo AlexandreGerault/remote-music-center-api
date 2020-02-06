@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Facades\Tests\Setup\PlayerFactory;
 use Facades\Tests\Setup\SongFactory;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class PlayerTest extends TestCase
@@ -119,13 +120,28 @@ class PlayerTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_create_a_player()
+    public function a_user_can_create_a_player_without_password()
     {
         $user = factory(User::class)->create();
         $player = factory(Player::class)->raw();
 
         $this->actingAs($user);
 
-        $response = $this->post('api/players/store', $player)->assertStatus(201);
+        $response = $this->post('api/players/store', $player)->assertStatus(201)->json();
+
+        $this->assertEquals(null,  $response['password']);
+    }
+
+    /** @test */
+    public function a_user_can_create_a_player_with_password()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->raw(['password' => 'my_pass']);
+
+        $this->actingAs($user);
+
+        $response = $this->post('api/players/store', $player)->assertStatus(201)->json();
+
+        $this->assertTrue(Hash::check('my_pass', $response['password']));
     }
 }
