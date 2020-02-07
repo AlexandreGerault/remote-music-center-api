@@ -20,7 +20,7 @@ class SongController extends Controller
     {
         if (auth()->guest() || auth()->check() && ! auth()->user()->player instanceof Player) {
             return response()->json([
-                'message' => "You have to be logged"
+                'message' => "You have to be logged and be related to a player!"
             ], 403);
         }
 

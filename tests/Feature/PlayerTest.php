@@ -127,9 +127,9 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->post('api/players/store', $player)->assertStatus(201)->json();
+        $response_data = json_decode($this->post('api/players/store', $player)->assertStatus(201)->decodeResponseJson());
 
-        $this->assertEquals(null,  $response['password']);
+        $this->assertEquals(null,  $response_data->password);
     }
 
     /** @test */
@@ -140,8 +140,8 @@ class PlayerTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->post('api/players/store', $player)->assertStatus(201)->json();
+        $response_data = json_decode($this->post('api/players/store', $player)->assertStatus(201)->decodeResponseJson());
 
-        $this->assertTrue(Hash::check('my_pass', $response['password']));
+        $this->assertTrue(Hash::check('my_pass', $response_data->password));
     }
 }
