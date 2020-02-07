@@ -27,7 +27,7 @@ Route::group([
 
 });
 
-Route::post('songs/store', 'SongController@store');
+Route::post('songs/store', 'SongController@store')->middleware('player');
 Route::get('next/{player}', 'PlayerController@next');
 
 Route::post('players/join', 'PlayerController@join');

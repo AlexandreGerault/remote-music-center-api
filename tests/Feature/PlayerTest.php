@@ -37,6 +37,7 @@ class PlayerTest extends TestCase
     /** @test */
     public function a_user_can_add_a_song()
     {
+        $this->withoutExceptionHandling();
         $player = PlayerFactory::create();
         $user = factory(User::class)->create(['player_id' => $player->id]);
 
@@ -93,8 +94,6 @@ class PlayerTest extends TestCase
     /** @test */
     public function a_user_can_leave_its_player()
     {
-        $this->withoutExceptionHandling();
-
         $player = PlayerFactory::create();
         $user = factory(User::class)->create(['player_id' => $player->id]);
 
