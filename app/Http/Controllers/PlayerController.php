@@ -39,34 +39,34 @@ class PlayerController extends Controller
     {
         auth()->user()->leavePlayer();
 
-        return response()->json([], 200);
+        return response()->json(null, 200);
     }
 
     /**
      * Return the next song in json format
      *
      * @param Player $player
-     * @return ResponseFactory|Response
+     * @return JsonResponse
      */
     public function next(Player $player)
     {
         $song = $player->songs->sortByDesc('created_at')->last();
 
-        return response($song->toJson(), 200);
+        return response()->json($song->toJson(), 200);
     }
 
     /**
      * Store a new player in database
      *
      * @param Request $request
-     * @return ResponseFactory|Response
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
         $player = Player::create([
-            'password' => Hash::make($request->get('password')) ?? null
+            'password' => ($password = $request->get('password')) === null ? null : Hash::make($password),
         ]);
 
-        if ($player) return response($player->toJson(), 201);
+        if ($player) return response()->json($player->toJson(), 201);
     }
 }
