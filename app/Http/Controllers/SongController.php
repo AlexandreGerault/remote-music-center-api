@@ -17,13 +17,12 @@ class SongController extends Controller
      *
      * @return JsonResponse
      */
-    public function store()
+    public function store(Request $request)
     {
-        $song = Song::create([
+        return response()->json(Song::create([
             'player_id' => auth()->user()->player->id,
-            'added_by_id' => auth()->user()->id
-        ]);
-
-        return response()->json($song->toJson(), 201);
+            'added_by_id' => auth()->user()->id,
+            'url' => $request->get('url')
+        ])->toJson(), 201);
     }
 }

@@ -15,6 +15,7 @@ class Song extends Model
     protected $fillable = [
         'player_id',
         'added_by_id',
+        'url'
     ];
 
     /**

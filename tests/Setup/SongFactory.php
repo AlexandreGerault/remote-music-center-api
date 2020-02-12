@@ -21,6 +21,13 @@ class SongFactory
      */
     protected Player $player;
 
+    /**
+     * The song's url
+     *
+     * @var String
+     */
+    protected String $url;
+
 
     /**
      * Set the user that added the song
@@ -43,6 +50,18 @@ class SongFactory
     public function toPlayer(Player $player) : SongFactory
     {
         $this->player = $player;
+        return $this;
+    }
+
+    /**
+     * Set the song's url
+     *
+     * @param string $url
+     * @return SongFactory
+     */
+    public function url(string $url) : SongFactory
+    {
+        $this->url = $url;
         return $this;
     }
 
@@ -77,7 +96,8 @@ class SongFactory
     {
         return factory(Song::class)->$method([
             'player_id' => $this->player->id ?? factory(Player::class),
-            'added_by_id' => $this->user->id ?? factory(User::class)
+            'added_by_id' => $this->user->id ?? factory(User::class),
+            'url' => $this->url ?? 'https://www.youtube.com/watch?v=e27dqYb6B3w'
         ]);
     }
 }
