@@ -28,4 +28,13 @@ class SongTest extends TestCase
 
         $this->assertEquals($player->id, $song->player->id);
     }
+
+    /** @test */
+    public function it_has_url()
+    {
+        $player = factory(Player::class)->create();
+        $song = SongFactory::toPlayer($player)->url('https://www.youtube.com/watch?v=HvxcvTDWiNc')->create();
+
+        $this->assertNotNull($song->url);
+    }
 }

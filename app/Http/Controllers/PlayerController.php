@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Player;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,7 +20,11 @@ class PlayerController extends Controller
      */
     public function join(Request $request)
     {
-        $player = Player::findOrFail($request->get('player'));
+        try {
+            $player = Player::find($request->get('player'));
+        } catch (ModelNotFoundException $exception) {
+            return response()->json(null, 404);
+        }
 
         if(
             $player->password && Hash::check($request->get('password'), $player->password)

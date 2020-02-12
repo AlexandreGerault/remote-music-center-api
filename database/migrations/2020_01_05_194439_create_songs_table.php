@@ -28,6 +28,8 @@ class CreateSongsTable extends Migration
                 ->on('users')
                 ->onDelete('set null');
 
+            $table->string('url');
+
             $table->timestamps();
         });
     }
