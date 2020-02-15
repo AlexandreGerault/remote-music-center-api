@@ -143,4 +143,12 @@ class PlayerTest extends TestCase
 
         $this->assertTrue(Hash::check('my_pass', $response_data->password));
     }
+
+    /** @test */
+    public function a_user_cannot_join_nonexistent_player()
+    {
+        $user = factory(User::class)->create();
+
+        $this->post('api/players/join', ['player' => 'aaa'])->assertStatus(404);
+    }
 }
