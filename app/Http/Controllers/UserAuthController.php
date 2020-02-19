@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserAuthController extends Controller
@@ -18,7 +19,7 @@ class UserAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('jwt.verify', ['except' => ['login', 'register']]);
+        $this->middleware('jwt.verify', ['except' => ['login', 'register', 'guest']]);
     }
 
     /**
@@ -43,6 +44,24 @@ class UserAuthController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+        ]);
+
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json(compact('user','token'),201);
+    }
+
+    /**
+     * Handle a guest registration
+     *
+     * @return JsonResponse
+     */
+    public function guest()
+    {
+        $user = User::create([
+            'name' => Str::random(),
+            'email' => '',
+            'password' => ''
         ]);
 
         $token = JWTAuth::fromUser($user);

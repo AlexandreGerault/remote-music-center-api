@@ -14,7 +14,20 @@ class Player extends Model
      * @var array
      */
     protected $fillable = [
-        'password',
+        'name',
+        'password'
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'password'
     ];
 
     /**
@@ -36,18 +49,5 @@ class Player extends Model
     public function songs():HasMany
     {
         return $this->hasMany(Song::class);
-    }
-
-    /**
-     * Get a player by its code
-     *
-     * @param Builder $query
-     * @param string $code
-     *
-     * @return Builder
-     */
-    public function scopeByCode(Builder $query, string $code)
-    {
-        return $query->where('code', $code);
     }
 }
