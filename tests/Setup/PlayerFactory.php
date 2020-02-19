@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 
 class PlayerFactory
 {
+    use HasFaker;
+
     /**
      * The number of users connected to the player
      * 
@@ -27,6 +29,13 @@ class PlayerFactory
      * @var string
      */
     protected string $password = "";
+
+    /**
+     * A required string
+     *
+     * @var string
+     */
+    protected string $name = "";
 
 
     /**
@@ -65,6 +74,18 @@ class PlayerFactory
         return $this;
     }
 
+    /**
+     * Set the player's name
+     *
+     * @param string $name
+     * @return PlayerFactory
+     */
+    public function withName(string $name) : PlayerFactory
+    {
+        $this->name = $name;
+        return $this;
+    }
+
 
     /**
      * Generate a parameterized player
@@ -73,7 +94,10 @@ class PlayerFactory
      */
     public function create()
     {
-        $player = factory(Player::class)->create([ 'password' => strlen($this->password) ? Hash::make($this->password) : null ]);
+        $player = factory(Player::class)->create([
+            'name' => $this->name ? $this->name : $this->faker()->unique()->name,
+            'password' => strlen($this->password) ? Hash::make($this->password) : null
+        ]);
 
         factory(User::class, $this->usersCount)->create(['player_id' => $player->id]);
         factory(Song::class, $this->songsCount)->create(['player_id' => $player->id]);

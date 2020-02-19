@@ -121,6 +121,8 @@ class PlayerTest extends TestCase
     /** @test */
     public function a_user_can_create_a_player_without_password()
     {
+        $this->withoutExceptionHandling();
+
         $user = factory(User::class)->create();
         $player = factory(Player::class)->raw();
 
@@ -150,5 +152,17 @@ class PlayerTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->post('api/players/join', ['player' => 'aaa'])->assertStatus(404);
+    }
+
+    /** @test */
+    public function a_user_must_be_able_to_ask_player_information()
+    {
+        $player = PlayerFactory::create();
+        $user = factory(User::class)->create(['player_id' => $player->id]);
+
+        $this->actingAs($user);
+
+        $this->get('api/players/current')
+            ->assertStatus(200);
     }
 }

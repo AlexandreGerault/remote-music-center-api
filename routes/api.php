@@ -20,6 +20,7 @@ Route::group([
 ], function ($router) {
 
     Route::post('register', 'UserAuthController@register');
+    Route::post('guest', 'UserAuthController@guest');
     Route::post('login', 'UserAuthController@login')->name('login');
     Route::post('logout', 'UserAuthController@logout');
     Route::post('refresh', 'UserAuthController@refresh');
@@ -33,3 +34,4 @@ Route::get('next/{player}', 'PlayerController@next');
 Route::post('players/join', 'PlayerController@join');
 Route::post('players/leave', 'PlayerController@leave');
 Route::post('players/store', 'PlayerController@store');
+Route::get('players/current', 'PlayerController@current');
