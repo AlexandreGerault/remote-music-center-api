@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -35,6 +34,13 @@ class ApiAuthenticationTest extends TestCase
         ]);
 
         $this->post('api/auth/register', $user)
-        ->assertStatus(201);
+            ->assertStatus(201);
+    }
+
+    /** @test */
+    public function a_user_can_have_guest_account()
+    {
+        $response = $this->post('api/auth/guest')
+            ->assertStatus(201);
     }
 }

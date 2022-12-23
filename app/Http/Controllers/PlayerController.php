@@ -29,7 +29,7 @@ class PlayerController extends Controller
             || $player->password === null
         ) {
             auth()->user()->joinPlayer($player);
-            return response()->json($player->toJson(), 200);
+            return response()->json($player, 200);
         }
 
         return response()->json(null, 403);
@@ -55,7 +55,7 @@ class PlayerController extends Controller
     {
         $song = $player->songs->sortByDesc('created_at')->last();
 
-        return response()->json($song->toJson(), 200);
+        return response()->json($song, 200);
     }
 
     /**
@@ -67,9 +67,15 @@ class PlayerController extends Controller
     public function store(Request $request)
     {
         $player = Player::create([
+            'name' => $request->get('name'),
             'password' => ($password = $request->get('password')) === null ? null : Hash::make($password),
         ]);
 
-        if ($player) return response()->json($player->toJson(), 201);
+        if ($player) return response()->json($player, 201);
+    }
+
+    public function current(Player $player)
+    {
+        return response()->json(auth()->user()->player, 200);
     }
 }
